@@ -1,0 +1,292 @@
+\documentclass[a4paper,12pt]{article}
+
+% Packages
+\usepackage{setspace}
+\usepackage{geometry}
+\usepackage{titlesec}
+\usepackage{graphicx} 
+\usepackage{tabularx} 
+\usepackage{longtable}
+\usepackage{natbib}
+\usepackage{pifont}
+
+\bibliographystyle{agsm}
+
+\graphicspath{ {figures/} }
+
+\geometry{margin=1in}
+\setstretch{1.5}
+\titleformat{\section}{\large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\normalfont\bfseries}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\normalfont\itshape}{\thesubsubsection}{1em}{}
+
+\pagenumbering{roman}
+\begin{document}
+	
+	% Title Page
+	\begin{titlepage}
+		\centering
+		\vspace*{1cm}
+		{\Large\bfseries Implementing Spiking Neural Networks on ARM Architecture: Investigating the Feasibility and Limitations \par}
+		\vspace{1cm}
+		{\normalsize A Research Proposal Submitted in Partial Fulfillment of the Requirements for the Degree of \par}
+		{\normalsize Bachelor of Science Honours in Computer Science and Technology \par}
+		\vspace{0.5cm}
+		{\normalsize Group 01 \par}
+		\vspace{0.5cm}
+		{\normalsize Supervised by \par}
+		{\normalsize Dr. Initials1 Surname1 \par}
+		{\normalsize Mr. Initials2 Surname2 \par}
+		{\normalsize Ms. Initials3 Surname3 \par}
+		\vspace{0.5cm}
+		{\normalsize Department of Computer Science and Informatics \par}
+		{\normalsize Faculty of Applied Sciences \par}
+		{\normalsize Uva Wellassa University of Sri Lanka \par}
+		\vspace{0.5cm}
+		{\normalsize July 23, 2025 \par}
+	\end{titlepage}
+	
+	% Student and Supervisor Agreements Page
+	\section*{Student and Supervisor Agreements}
+	\addcontentsline{toc}{section}{Student and Supervisor Agreements}
+	{\normalsize By signing below on [Date], we, as Group 01 members, agree to the terms of the CST 395-2 Research Methodology and Scientific Writing course at the 300 level. We commit to conducting the research project titled "Implementing Spiking Neural Networks on ARM Architecture: Investigating the Feasibility and Limitations" as outlined in the agreement. We understand that any changes to the group composition, identified research problem, or selected supervisor may result in penalties. \par}
+	\vspace{0.5cm}
+	\begin{tabular}{l l l}
+		\textbf{Name} & \textbf{Registration Number} & \textbf{Signature} \\
+		Mr. Initials1 Surname1 & UWU/CST/20/001 & \\
+		Ms. Initials2 Surname2 & UWU/CST/20/002 & \\
+		Mr. Initials3 Surname3 & UWU/CST/20/003 & \\
+		Ms. Initials4 Surname4 & UWU/CST/20/004 & \\
+	\end{tabular}
+	\vspace{0.5cm}
+	{\normalsize \textbf{Supervisor Agreement} \par}
+	{\normalsize I/We agree to supervise the above group of students throughout their research project, providing guidance and support for successful completion. I/We acknowledge that changes to group composition, identified research problem, or responsibilities may require further discussion. \par}
+	\vspace{0.5cm}
+	\begin{tabular}{l l}
+		\textbf{Name} & \textbf{Signature} \\
+		Dr. Initials1 Surname1 & \\
+		Mr. Initials2 Surname2 & \\
+		Ms. Initials3 Surname3 & \\
+	\end{tabular}
+	\cleardoublepage
+	
+	% Table of Contents
+	\addcontentsline{toc}{section}{Table of Contents}
+	\tableofcontents
+	\cleardoublepage
+	
+	% List of Figures
+	\addcontentsline{toc}{section}{List of Figures}
+	\listoffigures
+	\cleardoublepage
+	
+	% List of Tables
+	\addcontentsline{toc}{section}{List of Tables}
+	\listoftables
+	\cleardoublepage
+	
+	% List of Abbreviations
+	\addcontentsline{toc}{section}{List of Abbreviations}
+	\section*{List of Abbreviations}
+	\begin{tabular}{l l}
+		AI & Artificial Intelligence \\
+		ANN & Artificial Neural Network \\
+		SNN & Spiking Neural Network \\
+		IoT & Internet of Things \\
+		N-MNIST & Neuromorphic MNIST \\
+		DVS & Dynamic Vision Sensor \\
+		EEG & Electroencephalography \\
+	\end{tabular}
+	\cleardoublepage
+	
+	% Main Body
+	\pagenumbering{arabic}
+	
+	\section{Introduction}
+	
+	\subsection{Background of the Study}
+	Artificial Intelligence (AI) has become a cornerstone of modern technological development, powering applications from healthcare diagnostics to autonomous vehicles. Among the many AI approaches, neural networks—particularly deep learning models—have gained significant traction due to their ability to achieve state-of-the-art performance in complex tasks such as image recognition, speech processing, and natural language understanding. However, as the demand for AI grows, so does the need for efficient, scalable, and sustainable computational models capable of operating effectively on edge and embedded devices.
+	
+	In response to these demands, Spiking Neural Networks (SNNs) have emerged as a promising alternative to conventional Artificial Neural Networks (ANNs). Inspired by the way biological neurons communicate through discrete spikes, SNNs mimic brain-like event-driven processing, offering the potential for low-power and highly efficient computation. At the same time, ARM-based architectures dominate mobile, IoT, and embedded systems, making them the backbone of energy-conscious computing platforms. Investigating how SNNs can be implemented on ARM systems is therefore crucial for bridging neuroscience-inspired AI with practical real-world deployment.
+	
+	Recent research has demonstrated considerable progress in improving the accuracy and latency of SNNs, making them more competitive with traditional deep learning models. Event-driven sensors and neuromorphic computing have also created new opportunities for real-time, energy-efficient applications. Despite these advancements, challenges remain: SNNs often face difficulties in model training, hardware–software integration, and achieving comparable accuracy without consuming significant resources. Moreover, while ARM processors are pervasive, relatively little research has focused on the direct deployment of SNNs on these architectures, leaving critical gaps in performance evaluation and optimization strategies.
+	
+	This gap highlights the need for systematic investigation into the feasibility and limitations of deploying SNNs on ARM platforms. Without such studies, the potential of SNNs for real-time, low-power edge computing remains largely theoretical. By examining how SNNs perform on different ARM-based systems, this research aims to provide practical insights, benchmark data, and optimization guidelines that could accelerate the adoption of brain-inspired AI in resource-constrained environments. Ultimately, this study seeks to bridge the divide between the promise of SNNs and the practical realities of embedded AI deployment.
+	
+	\subsection{Problem Statement}
+	Artificial Intelligence (AI) is increasingly shifting toward real-time applications on edge devices such as smartphones, IoT systems, and embedded platforms. These devices require models that are not only accurate but also energy-efficient, since traditional deep learning architectures consume significant computational power and battery resources. Spiking Neural Networks (SNNs), inspired by the human brain’s event-driven signaling, have emerged as a promising alternative due to their ability to achieve computation with lower energy costs. Despite their potential, there is a noticeable gap when it comes to practical deployment: most research and optimizations for SNNs have been tested on high-performance hardware, leaving their behavior on resource-constrained platforms like ARM largely unexplored. Without addressing this gap, the widespread adoption of energy-efficient, brain-inspired AI for real-world embedded applications will remain limited.
+	
+	Prior research has shown that SNNs can significantly reduce energy consumption compared to conventional Artificial Neural Networks (ANNs), particularly in neuromorphic hardware and GPU-based systems \citep{Bouvier2019, Bu2022}. Frameworks such as SpiNeMap \citep{Balaji2019} and evaluation tools like NAXT \citep{Abderrahmane2020} have advanced the mapping and benchmarking of SNNs. However, these studies mainly focus on specialized neuromorphic chips or general-purpose processors, overlooking ARM-based architectures, which dominate the embedded and mobile computing market. As a result, there is limited empirical evidence and optimization guidelines for effectively running SNNs on ARM systems. This shortcoming prevents developers from fully understanding the trade-offs, bottlenecks, and feasibility of deploying SNNs in practical edge scenarios.
+	
+	The core problem is that while SNNs are recognized as energy-efficient alternatives to conventional neural networks, their implementation on ARM-based systems remains underexplored and poorly understood. The lack of systematic investigation into feasibility, performance, and limitations creates a significant barrier to realizing energy-efficient, brain-inspired AI on the world’s most widely used embedded platform. If this issue is not addressed, the potential benefits of SNNs—such as real-time low-power processing for edge and IoT devices—cannot be fully achieved. Therefore, this research aims to systematically investigate the feasibility and limitations of implementing Spiking Neural Networks on ARM architecture, providing empirical benchmarks and optimization strategies that can guide future embedded AI development.
+	
+	\subsection{Aim, Objectives and Questions}
+	\textbf{Aim:} To systematically investigate the feasibility and limitations of implementing Spiking Neural Networks on ARM architecture by designing, deploying, and benchmarking SNN models across a representative range of ARM-based platforms.
+	
+	\textbf{Objectives:}
+	\begin{itemize}
+		\item To conduct a comprehensive review of existing SNN models, software frameworks, and deployment methodologies suitable for ARM-based systems.
+		\item To design and implement benchmark SNN models for a standard machine-learning task using a selected SNN framework compatible with ARM architecture.
+		\item To deploy the implemented SNNs on a curated set of ARM platforms and systematically measure key performance metrics, including accuracy, inference latency, and power consumption.
+		\item To evaluate the feasibility of SNNs on ARM by examining performance data, identifying key bottlenecks, and defining operational limits.
+	\end{itemize}
+	
+	\textbf{Research Questions:}
+	\begin{itemize}
+		\item What are the technical and computational challenges of implementing Spiking Neural Networks on ARM Architecture?
+		\item How do SNN implementations on ARM Architecture compare with conventional ANN's in terms of performance, energy efficiency and latency?
+		\item What optimizations or adaptations are required to improve the feasibility of SNNs on ARM Systems?
+		\item What methods can be used to evaluate the feasibility of SNNs on ARM Architecture?
+		\item How feasible is the deployment of SNNs on ARM Architecture?
+	\end{itemize}
+	
+	\subsection{Rationale of the Study}
+	The rapid expansion of AI applications into mobile, IoT, and edge computing has created an urgent demand for models that can operate with high efficiency on resource-limited platforms. Conventional Artificial Neural Networks (ANNs), while powerful, are often unsuitable for these environments due to their high energy consumption and latency. Spiking Neural Networks (SNNs) represent a new frontier in AI research, inspired by the brain’s efficient, event-driven processing. With ARM processors powering the majority of mobile and embedded devices globally, exploring the deployment of SNNs on ARM has become a timely and highly relevant problem. Addressing this research now is essential, as the need for low-power, real-time AI solutions continues to grow rapidly in both industry and academia.
+	
+	While previous research has made progress in optimizing SNNs on specialized neuromorphic chips and high-performance GPUs, there is a clear lack of systematic studies focusing on ARM-based architectures. This gap is problematic because ARM platforms dominate everyday devices, from smartphones to embedded sensors, and are central to the growth of smart technologies. Current solutions fail to provide reliable benchmarks, performance guidelines, or optimization strategies for SNNs in these settings, leaving a major disconnect between theoretical research and practical deployment.
+	
+	This study is motivated by the belief that bridging this gap can have significant real-world impact. By investigating the feasibility and limitations of SNNs on ARM, the research aims to provide practical insights that could make energy-efficient, brain-inspired AI accessible to a wide range of low-power devices. For countries like Sri Lanka, where cost-effective and sustainable technology solutions are vital, this work could help advance industries such as agriculture, healthcare, and IoT-driven services. Beyond academic significance, this project reflects our group’s interest in future-ready AI methods that combine innovation with practicality, contributing to both global AI development and local technological progress.
+	
+	\subsection{Significance of the Study}
+	This research holds value for both academic and practical communities. Academically, it contributes new knowledge by systematically exploring the feasibility of deploying Spiking Neural Networks (SNNs) on ARM architectures — a direction that has received limited attention compared to neuromorphic chips and GPUs. By benchmarking performance, energy efficiency, and limitations, the study provides a foundation for future researchers to build on, advancing the understanding of brain-inspired AI in embedded computing. It not only extends theoretical discussions but also offers concrete empirical data that fills a critical research gap.
+	
+	From a practical perspective, this study benefits industries and societies that increasingly rely on low-power, real-time AI systems. ARM processors dominate mobile phones, IoT devices, and embedded platforms used worldwide. By providing optimization strategies and performance insights for SNNs on ARM, this research can enable developers to design applications that are both energy-efficient and responsive. Potential applications include smart healthcare devices, precision agriculture systems, autonomous robotics, and wearable technology — areas where reducing power consumption is vital.
+	
+	Furthermore, the study introduces improvements to existing methods by aligning neuromorphic-inspired AI with the constraints of widely available hardware. This alignment makes advanced AI more accessible for developing countries like Sri Lanka, where affordable, energy-conscious solutions are essential. In this way, the research not only helps global technological innovation but also directly supports local communities and industries by enabling sustainable and practical AI deployment.
+	
+	Ultimately, the findings of this research can guide future academic projects, inspire further exploration into low-power AI, and serve as a stepping stone toward products, systems, and services that bring real-world benefits to diverse groups such as students, farmers, patients, and everyday technology users.
+	
+	\subsection{Scope and Limitations of the Study}
+	This research focuses on investigating the feasibility and limitations of implementing Spiking Neural Networks (SNNs) on ARM-based architectures. The study will design, deploy, and benchmark selected SNN models on representative ARM platforms, including Raspberry Pi, NVIDIA Jetson Nano, and STM32 microcontrollers. Publicly available neuromorphic datasets such as N-MNIST, DVS Gesture, and EEG Motor Movement/Imagery will be used for evaluating performance in tasks like image and gesture recognition. Key performance metrics including accuracy, inference latency, and energy consumption will be measured. The study is limited to ARM-based systems as the primary computing environment, emphasizing real-time and low-power edge computing scenarios rather than large-scale cloud or GPU platforms.
+	
+	The study faces certain constraints due to technical, resource, and time boundaries. First, the hardware platforms available for experimentation are limited to a small selection of ARM-based boards, which may not capture the full diversity of ARM processors used in industry. Second, only specific datasets are considered, meaning results may not fully generalize across all application domains of SNNs. Third, training large-scale SNN models is computationally intensive and may not be feasible within the time frame, requiring reliance on smaller benchmark models. Additionally, the study assumes stable software support from existing SNN frameworks, though these frameworks are still evolving and may impose restrictions on functionality. Finally, due to the academic scope and timeline of the project, the research will primarily focus on experimental validation rather than deployment into real-world commercial products.
+	
+	\section{Literature Review}
+	Artificial Intelligence has evolved rapidly in recent decades, with deep learning dominating applications such as computer vision, speech recognition, and natural language processing. However, conventional Artificial Neural Networks (ANNs) consume significant power, making them less practical for mobile, IoT, and embedded devices where energy efficiency is critical. Spiking Neural Networks (SNNs), inspired by biological neurons, offer an energy-efficient and event-driven alternative. At the same time, ARM architectures power the majority of embedded and mobile devices worldwide, highlighting the importance of understanding how SNNs can be deployed on these platforms. This literature review is organized thematically, covering SNN fundamentals, energy efficiency, hardware implementations, optimization frameworks, and finally identifying the research gap.
+	
+	\subsection{Spiking Neural Networks and Neuromorphic Inspiration}
+	Spiking Neural Networks represent the third generation of neural models, designed to replicate the way biological neurons communicate through spikes. Unlike ANNs, which use continuous activations, SNNs process information sparsely and event-driven, enabling more efficient computations \citep{Bouvier2019}. This neuromorphic inspiration has attracted attention for applications that demand both low power and real-time responsiveness.
+	
+	\subsection{Energy Efficiency of SNNs Compared to Conventional ANNs}
+	A key motivation for adopting SNNs is their potential for significant energy savings. \citet{Yang2019} highlighted that SNNs can achieve comparable performance to ANNs with much lower energy consumption, making them ideal for edge computing. \citet{Bu2022} further demonstrated improvements in training methodologies that reduced latency and improved accuracy, showing that modern SNNs are becoming competitive with ANNs in both speed and performance.
+	
+	\subsection{Hardware Implementations of SNNs}
+	Researchers have increasingly explored implementing SNNs on different hardware platforms. For example, SpiNeMap introduced by \citet{Balaji2019} provided methods for mapping SNNs to neuromorphic systems efficiently. More recently, \citet{Goma2023} developed a scalable accelerator on ARM Cortex-A72, showing the potential of ARM for neuromorphic workloads. Despite such advancements, most existing research focuses on GPU platforms or custom neuromorphic chips, while ARM — the most widely deployed embedded architecture — remains relatively underexplored.
+	
+	\subsection{Optimization Frameworks and Evaluation Methods}
+	Various frameworks have been created to evaluate and optimize SNN performance. \citet{Abderrahmane2020} proposed the NAXT framework to assess latency, throughput, and energy efficiency in neuromorphic systems. These tools are valuable for benchmarking but have rarely been applied directly to ARM platforms. This creates a methodological limitation in understanding the full potential of ARM-based SNN deployment.
+	
+	\subsection{Research Gap}
+	In summary, while SNNs have shown strong potential for energy-efficient AI and several hardware implementations have been tested, systematic exploration of their feasibility on ARM architectures is lacking. The limited number of studies on ARM leaves critical questions unanswered regarding performance trade-offs, bottlenecks, and practical deployment strategies. This study seeks to fill that gap by providing empirical evidence and optimization guidelines for implementing SNNs on ARM-based systems, bridging the divide between theoretical promise and real-world embedded AI applications.
+	
+	\section{Research Methodology}
+	This study follows a positivism philosophy, focusing on objective, measurable aspects of system performance such as accuracy, latency, and energy consumption. Since the feasibility and limitations of implementing Spiking Neural Networks (SNNs) on on ARM architectures can be systematically tested, this philosophy ensures rigor through quantifiable evidence.
+	
+	\subsection{Research Approach and Strategy}
+	The study adopts a deductive approach, starting from established theories of SNN performance and ARM system design. Hypotheses about efficiency, latency, and power consumption are formulated and then tested through controlled experiments. The research strategy is experimental, involving the design, deployment, and benchmarking of SNN models on ARM platforms. Key variables (e.g., input data size, model complexity, hardware configuration) will be systematically adjusted to observe their impact on performance metrics.
+	
+	\subsection{Data Collection Methods}
+	This study relies on secondary data sources, specifically established neuromorphic and brain-inspired datasets that are widely used for benchmarking Spiking Neural Networks (SNNs). The datasets selected include:
+	\begin{itemize}
+		\item \textbf{EEG Motor Movement/Imagery Dataset} – to evaluate SNN performance on brain-signal-based classification tasks, simulating real-world biomedical applications.
+		\item \textbf{DVS Gesture Dataset} – an event-driven dataset collected from a Dynamic Vision Sensor (DVS), suitable for testing the ability of SNNs to process temporal, gesture-based information.
+		\item \textbf{Neuromorphic MNIST (N-MNIST) Dataset} – a spiking version of the classic MNIST dataset, providing a standardized benchmark for evaluating SNN classification accuracy and efficiency.
+	\end{itemize}
+	These datasets are appropriate for the study because they are:
+	\begin{itemize}
+		\item Representative of real-world neuromorphic tasks (biomedical signals, gesture recognition, and image recognition).
+		\item Widely validated in neuromorphic computing literature, ensuring comparability of results with prior research.
+		\item Compatible with ARM-based deployment, allowing systematic testing of accuracy, inference latency, memory usage, and power consumption across different ARM platforms.
+	\end{itemize}
+	Data will be processed and logged through systematic benchmarking experiments in which SNN models are implemented using selected frameworks and deployed on ARM architectures. Performance metrics (accuracy, latency, power consumption, and memory usage) will be collected automatically during execution for subsequent analysis.
+	
+	\subsection{Sampling Strategy}
+	Since the research focuses on hardware platforms rather than human participants, the sampling strategy is based on selecting representative ARM-based devices. Three categories of devices are included:
+	\begin{itemize}
+		\item Raspberry Pi
+		\item NVIDIA Jetson Nano
+		\item STM32 microcontroller (ARM Cortex-M)
+	\end{itemize}
+	These represent a spectrum of ARM systems commonly used in embedded and edge computing. Inclusion is based on availability, relevance, and suitability for SNN deployment. No human subjects are involved, so participant sampling and consent are not applicable.
+	
+	\subsection{Data Analysis Techniques}
+	Collected data will be analyzed using statistical and comparative analysis. Descriptive statistics will summarize performance metrics such as average accuracy, energy consumption, and latency across multiple test runs. Comparative analysis will then be used to evaluate how SNN performance on ARM devices differs from existing benchmarks on GPUs or neuromorphic hardware. Bottlenecks and limitations will be identified by analyzing trade-offs between efficiency and accuracy. This analytical approach is justified because it provides both a detailed quantitative assessment and a clear comparison across platforms.
+	
+	\subsection{Ethical Considerations}
+	This study does not involve human participants, so ethical concerns related to informed consent, confidentiality, or privacy are not applicable. However, the research will adhere to ethical standards in academic integrity, ensuring proper citation of sources, transparent reporting of results, and responsible use of computational resources. Any datasets used will be publicly available and compliant with licensing agreements. The study will also consider the environmental impact of computational experiments, aiming to minimize energy consumption during testing on ARM platforms.
+	
+	\subsection{Evaluation Strategy}
+	The evaluation of this research will first focus on performance metrics, which act as the primary indicators of system efficiency. These include execution time, memory usage, and energy consumption. Measuring execution time provides insight into how quickly the SNN processes inputs, while memory usage highlights the amount of computational resources required. Energy consumption reflects the power efficiency of the system, which is particularly important for ARM-based devices often used in low-power environments. Together, these metrics provide a comprehensive understanding of the system’s overall performance.
+	
+	To ensure meaningful results, the outcomes will be compared against baseline benchmarks. These baselines may include established performance records from existing SNN implementations or results from comparable studies on different hardware architectures. Such comparisons are essential, as they help determine whether the implementation on ARM architecture performs better, worse, or at a similar level to the benchmarks. This not only validates the feasibility of the system but also situates the findings within the broader research context.
+	
+	The research will also emphasize validation by repeating experiments under identical conditions. This repetition ensures that the observed results are consistent and not due to random variation or system anomalies. By maintaining the same datasets, configurations, and testing environments across multiple trials, the reliability and reproducibility of the findings are strengthened, making the conclusions more credible.
+	
+	Finally, success criteria are defined to evaluate the effectiveness of the implementation. Success will be indicated by measurable improvements in efficiency or feasibility under optimized configurations. For example, reductions in energy consumption, improvements in execution time, or decreases in memory usage without compromising functionality will represent positive outcomes. Meeting these success criteria will demonstrate the potential of deploying SNNs effectively on ARM-based architectures.
+	
+	\subsection{Tools and Technologies}
+	The following tools and technologies will be used to conduct the research:
+	\begin{itemize}
+		\item \textbf{SNN Frameworks:} Frameworks such as Brian2, NEST, or PySNN will be used for designing and simulating SNN models, selected based on their compatibility with ARM architectures and support for neuromorphic datasets.
+		\item \textbf{ARM Platforms:} Raspberry Pi 4, NVIDIA Jetson Nano, and STM32 microcontrollers (ARM Cortex-M series) will be used as the primary hardware platforms for deployment and benchmarking.
+		\item \textbf{Programming Languages:} Python will be the primary programming language for implementing SNN models, with potential use of C/C++ for optimizing performance on microcontrollers.
+		\item \textbf{Performance Monitoring Tools:} Tools like Powerstat, Perf, and custom scripts will be used to measure power consumption, latency, and memory usage during experiments.
+		\item \textbf{Data Analysis Tools:} Python libraries such as NumPy, Pandas, and Matplotlib will be used for statistical analysis and visualization of performance metrics.
+		\item \textbf{Operating Systems:} Linux-based operating systems (e.g., Raspberry Pi OS, Ubuntu for Jetson Nano) will be used to ensure compatibility with ARM hardware and SNN frameworks.
+	\end{itemize}
+	
+	\section{Proposed Timeline}
+	The research will span from July 2025 to the second semester of Level 400 (approximately June 2026). Below is a Gantt chart outlining the timeline for key tasks, aligned with the research objectives.
+	
+	\begin{figure}[h]
+		\centering
+		\caption{Project Plan}
+	\end{figure}
+	
+	\begin{longtable}{|p{4cm}|p{1.5cm}|p{1.5cm}|p{1.5cm}|p{1.5cm}|p{1.5cm}|p{1.5cm}|p{1.5cm}|p{1.5cm}|}
+		\hline
+		\textbf{Task} & \textbf{Jul 25} & \textbf{Aug 25} & \textbf{Sep 25} & \textbf{Oct 25} & \textbf{Nov 25} & \textbf{Dec 25} & \textbf{Jan 26} & \textbf{Feb-Jun 26} \\
+		\hline
+		Proposal Writing & \multicolumn{2}{c|}{\ding{52}} & & & & & & \\
+		Literature Review & \multicolumn{2}{c|}{\ding{52}} & \ding{52} & & & & & \\
+		Dataset Collection/Preprocessing & & & \ding{52} & \ding{52} & & & & \\
+		Model Development & & & & \ding{52} & \ding{52} & & & \\
+		Deployment \& Testing & & & & & \ding{52} & \ding{52} & & \\
+		Analysis \& Discussion & & & & & & \ding{52} & \ding{52} & \\
+		Documentation & & & & & & & \ding{52} & \ding{52} \\
+		\hline
+		\caption{Proposed Timeline for Research Activities}
+	\end{longtable}
+	
+	\textbf{Objective Milestones:}
+	\begin{itemize}
+		\item \textbf{Objective 1 (Review):} Completed by September 2025 with a comprehensive literature review.
+		\item \textbf{Objective 2 (Implementation):} Completed by November 2025 with benchmark SNN models implemented.
+		\item \textbf{Objective 3 (Deployment):} Completed by December 2025 with experimental datasets collected.
+		\item \textbf{Objective 4 (Evaluation):} Completed by February 2026 with feasibility assessment and bottleneck analysis.
+	\end{itemize}
+	
+	\section{Expected Outcomes}
+	This research is expected to deliver both practical outputs and theoretical contributions to the field of neuromorphic computing on ARM architectures. The main deliverables include benchmarked Spiking Neural Network (SNN) models, a prototype deployment framework for ARM platforms, and a comprehensive feasibility assessment highlighting performance trade-offs and optimization opportunities.
+	
+	A key outcome will be the establishment of quantitative correlations between SNN performance metrics—such as latency, power consumption, and memory usage—and architectural attributes of ARM platforms, including cache size, core design, and SIMD capabilities. This correlation will provide a measurable basis for evaluating how hardware features influence the efficiency of neuromorphic models, offering valuable insights for both system designers and researchers.
+	
+	Another important deliverable will be a feasibility assessment of SNNs for real-time applications on ARM-based devices. By comparing SNN implementations against traditional Artificial Neural Networks (ANNs), the study will highlight measurable improvements in latency and energy efficiency, providing evidence for the viability of SNNs in low-power, edge-computing environments. This outcome will guide practitioners seeking energy-efficient solutions for real-time processing tasks.
+	
+	In addition, the research will result in the identification and analysis of critical bottlenecks—both architectural and software-related—that hinder SNN performance on commercially available ARM systems. These findings, supported by empirical benchmarking data, will not only reveal the limitations of current deployments but also suggest directions for optimization in future ARM architectures and SNN frameworks.
+	
+	The findings of this research will contribute new knowledge by bridging the gap between neuromorphic models and ARM-based deployment environments. Future researchers can build upon these results to refine frameworks, optimize hardware utilization, and explore new applications of SNNs in edge AI.
+	
+	Finally, the study outcomes will directly align with the research objectives:
+	\begin{itemize}
+		\item \textbf{Objective 1 (Review):} Deliver a comprehensive literature review summarizing the current state of SNNs and their deployment frameworks.
+		\item \textbf{Objective 2 (Implementation):} Produce benchmark SNN models implemented on ARM-compatible frameworks.
+		\item \textbf{Objective 3 (Deployment):} Generate experimental datasets capturing key performance metrics across different ARM devices.
+		\item \textbf{Objective 4 (Evaluation):} Deliver a feasibility assessment and identification of bottlenecks, supported by validated benchmarking results.
+	\end{itemize}
+	Together, these outcomes will provide a well-rounded understanding of SNN feasibility on ARM platforms and serve as a valuable reference for researchers, practitioners, and system designers.
+	
+	\bibliography{references}
+	\addcontentsline{toc}{section}{References}
+	
+\end{document}
